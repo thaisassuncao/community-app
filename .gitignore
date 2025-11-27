@@ -15,6 +15,9 @@
 # Used by dotenv library to load environment variables.
 .env
 
+# Docker
+*.log
+
 # Ignore Byebug command history file.
 .byebug_history
 

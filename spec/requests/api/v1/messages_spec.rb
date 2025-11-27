@@ -37,7 +37,8 @@ RSpec.describe "Api::V1::Messages" do
       it "does not create a new user" do
         expect do
           post "/api/v1/messages", params: valid_params
-        end.not_to change(User, :count).and change(Message, :count).by(1)
+        end.to change(Message, :count).by(1)
+                                      .and not_change(User, :count)
 
         expect(response).to have_http_status(:created)
         json_response = response.parsed_body

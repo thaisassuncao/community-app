@@ -5,10 +5,52 @@ A community management platform with a REST API, web interface, and basic sentim
 - Ruby [v3.3.9](https://www.ruby-lang.org/en/news/2025/07/24/ruby-3-3-9-released/)
 - Rails [v7.2.2.2](https://rubygems.org/gems/rails/versions/7.2.2.2)
 - PostgreSQL [v17](https://www.postgresql.org/download/)
+- Docker Engine (CLI) [v27+](https://docs.docker.com/engine/install/) (optional, recommended for testing)
 
 If needed, see the [official Ruby installation documentation](https://www.ruby-lang.org/en/documentation/installation/).
 
-## Running the Project Locally
+## Running with Docker (Recommended)
+
+Docker allows you to run the project and tests **without installing PostgreSQL locally**.
+
+#### 1. Build the images:
+```sh
+$ make build
+```
+
+#### 2. Setup test database:
+```sh
+$ make test-setup
+```
+
+#### 3. Run tests:
+```sh
+$ make test
+```
+
+#### 4. Run linter:
+```sh
+$ make lint
+```
+
+#### 5. Start the application (development):
+```sh
+$ make up
+```
+
+Visit: http://localhost:3000
+
+#### Other useful commands:
+```sh
+$ make help          # Show all available commands
+$ make down          # Stop containers
+$ make shell         # Open shell in container
+$ make logs          # View application logs
+```
+
+## Running Locally (Without Docker)
+
+Requires PostgreSQL installed and running locally.
 
 #### 1. Install dependencies:
 ```sh
@@ -44,8 +86,8 @@ $ bundle exec rubocop
 ### Repositório & Código
 - [X] Código no GitHub (público): [URL DO REPO](https://github.com/thaisassuncao/community-app)
 - [ ] README com instruções completas
-- [ ] `.env.example` ou similar com variáveis de ambiente
-- [ ] Linter/formatter configurado
+- [X] `.env.example` ou similar com variáveis de ambiente
+- [X] Linter/formatter configurado
 - [ ] Código limpo e organizado
 
 ### Stack Utilizada
@@ -76,11 +118,11 @@ $ bundle exec rubocop
 
 ### Testes
 - [ ] Cobertura mínima de 70%
-- [ ] Testes passando
-- [ ] Como rodar: `bundle exec rspec`
+- [X] Testes passando
+- [X] Como rodar: `bundle exec rspec` ou `make test`
 
 ### Documentação
-- [ ] Setup local documentado
+- [X] Setup local documentado
 - [ ] Decisões técnicas explicadas
 - [ ] Como rodar seeds
 - [ ] Endpoints da API documentados

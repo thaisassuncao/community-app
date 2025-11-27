@@ -1,0 +1,8 @@
+.git
+.gitignore
+log/*
+tmp/*
+*.md
+.env
+coverage
+spec/examples.txt

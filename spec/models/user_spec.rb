@@ -9,6 +9,8 @@ RSpec.describe User do
   end
 
   describe "validations" do
+    subject { build(:user) }
+
     it { is_expected.to validate_presence_of(:username) }
     it { is_expected.to validate_uniqueness_of(:username) }
   end

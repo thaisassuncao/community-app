@@ -13,6 +13,8 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 
+RSpec::Matchers.define_negated_matcher :not_change, :change
+
 RSpec.configure do |config|
   config.fixture_paths = [Rails.root.join("spec/fixtures")]
   config.use_transactional_fixtures = true
