@@ -101,12 +101,12 @@ $ bundle exec rubocop
 - [ ] Seeds executados (dados de exemplo visíveis)
 
 ### Funcionalidades - API
-- [ ] POST /api/v1/messages (criar mensagem + sentiment)
-- [ ] POST /api/v1/reactions (com proteção de concorrência)
-- [ ] GET /api/v1/communities/:id/messages/top
-- [ ] GET /api/v1/analytics/suspicious_ips
-- [ ] Tratamento de erros apropriado
-- [ ] Validações implementadas
+- [X] POST /api/v1/messages (criar mensagem + sentiment)
+- [X] POST /api/v1/reactions (com proteção de concorrência)
+- [X] GET /api/v1/communities/:id/messages/top
+- [X] GET /api/v1/analytics/suspicious_ips
+- [X] Tratamento de erros apropriado
+- [X] Validações implementadas
 
 ### Funcionalidades - Frontend
 - [ ] Listagem de comunidades

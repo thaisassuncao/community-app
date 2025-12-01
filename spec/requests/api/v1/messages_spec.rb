@@ -27,7 +27,7 @@ RSpec.describe "Api::V1::Messages" do
         expect(json_response["content"]).to eq("Conteúdo da mensagem")
         expect(json_response["user"]["username"]).to eq("john_doe")
         expect(json_response["community_id"]).to eq(community.id)
-        expect(json_response["ai_sentiment_score"]).to be_nil
+        expect(json_response["ai_sentiment_score"]).to eq(0.0)
       end
     end
 
@@ -118,6 +118,41 @@ RSpec.describe "Api::V1::Messages" do
         post "/api/v1/messages", params: missing_fields_params
 
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context "with sentiment analysis" do
+      it "calculates positive sentiment score" do
+        positive_params = valid_params.deep_dup
+        positive_params[:message][:content] = "Este produto é ótimo e excelente!"
+
+        post "/api/v1/messages", params: positive_params
+
+        expect(response).to have_http_status(:created)
+        json_response = response.parsed_body
+        expect(json_response["ai_sentiment_score"]).to eq(1.0)
+      end
+
+      it "calculates negative sentiment score" do
+        negative_params = valid_params.deep_dup
+        negative_params[:message][:content] = "Isso é ruim e péssimo"
+
+        post "/api/v1/messages", params: negative_params
+
+        expect(response).to have_http_status(:created)
+        json_response = response.parsed_body
+        expect(json_response["ai_sentiment_score"]).to eq(-1.0)
+      end
+
+      it "calculates neutral sentiment score" do
+        neutral_params = valid_params.deep_dup
+        neutral_params[:message][:content] = "Hoje vou almoçar macarrão"
+
+        post "/api/v1/messages", params: neutral_params
+
+        expect(response).to have_http_status(:created)
+        json_response = response.parsed_body
+        expect(json_response["ai_sentiment_score"]).to eq(0.0)
       end
     end
   end

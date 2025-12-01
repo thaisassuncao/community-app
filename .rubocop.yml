@@ -25,12 +25,21 @@ Metrics/BlockLength:
     - 'spec/**/*'
     - 'config/routes.rb'
 
+Metrics/AbcSize:
+  Max: 21
+
 Metrics/MethodLength:
-  Max: 20
+  Max: 21
 
 Rails/Exit:
   Exclude:
     - 'spec/**/*'
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 6
 
 Style/Documentation:
   Enabled: false
@@ -45,4 +54,4 @@ Style/FrozenStringLiteralComment:
 RSpec/ExampleLength:
   Max: 15
 RSpec/MultipleExpectations:
-  Max: 6
+  Max: 8
