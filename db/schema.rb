@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_27_000004) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_01_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,9 +31,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_27_000004) do
     t.float "ai_sentiment_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["community_id", "parent_message_id"], name: "index_messages_on_community_id_and_parent_message_id"
     t.index ["community_id"], name: "index_messages_on_community_id"
     t.index ["parent_message_id"], name: "index_messages_on_parent_message_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
+    t.index ["user_ip", "user_id"], name: "index_messages_on_user_ip_and_user_id"
+    t.index ["user_ip"], name: "index_messages_on_user_ip"
   end
 
   create_table "reactions", force: :cascade do |t|
@@ -42,6 +45,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_27_000004) do
     t.string "reaction_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["message_id", "reaction_type"], name: "index_reactions_on_message_id_and_reaction_type"
     t.index ["message_id", "user_id", "reaction_type"], name: "index_reactions_on_message_user_type", unique: true
     t.index ["message_id"], name: "index_reactions_on_message_id"
     t.index ["user_id"], name: "index_reactions_on_user_id"

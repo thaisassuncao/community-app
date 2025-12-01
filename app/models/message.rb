@@ -11,10 +11,9 @@ class Message < ApplicationRecord
   validates :content, presence: true
   validates :user_ip, presence: true
 
-  # TODO: Implement AI sentiment score calculation
-  # This method will be implemented when integrating AI service
+  before_save :calculate_sentiment_score
+
   def calculate_sentiment_score
-    # Will return a float between -1.0 (negative) and 1.0 (positive)
-    nil
+    self.ai_sentiment_score = SentimentAnalyzer.analyze(content)
   end
 end

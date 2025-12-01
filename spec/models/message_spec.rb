@@ -17,9 +17,22 @@ RSpec.describe Message do
   end
 
   describe "#calculate_sentiment_score" do
-    it "returns nil as placeholder for AI integration" do
-      message = build(:message)
-      expect(message.calculate_sentiment_score).to be_nil
+    it "calculates positive sentiment" do
+      message = build(:message, content: "Este produto é ótimo!")
+      message.save
+      expect(message.ai_sentiment_score).to eq(1.0)
+    end
+
+    it "calculates negative sentiment" do
+      message = build(:message, content: "Isso é ruim")
+      message.save
+      expect(message.ai_sentiment_score).to eq(-1.0)
+    end
+
+    it "calculates neutral sentiment" do
+      message = build(:message, content: "Vou almoçar arroz e feijão")
+      message.save
+      expect(message.ai_sentiment_score).to eq(0.0)
     end
   end
 end

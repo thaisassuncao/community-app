@@ -7,9 +7,6 @@ module Api
         user = find_or_create_user
         message = build_message(user)
 
-        # TODO: Implement AI sentiment score calculation
-        # message.ai_sentiment_score = message.calculate_sentiment_score
-
         if message.save
           render json: message_response(message), status: :created
         else
@@ -47,7 +44,7 @@ module Api
           },
           community_id: message.community_id,
           parent_message_id: message.parent_message_id,
-          ai_sentiment_score: message.ai_sentiment_score, # TODO: Will be calculated with AI integration
+          ai_sentiment_score: message.ai_sentiment_score,
           created_at: message.created_at.iso8601
         }
       end
