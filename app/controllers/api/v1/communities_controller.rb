@@ -44,6 +44,12 @@ module Api
         limit <= 0 ? 10 : limit
       end
 
+      # Business Rule: Weighted engagement scoring algorithm
+      # Why: Reactions are weighted 1.5x higher than replies because emoji reactions
+      # require minimal effort (single click) while writing a reply requires thought
+      # and composition. This values substantive engagement (replies) as the primary
+      # signal, with reactions as a secondary but still meaningful indicator.
+      # Formula: (reactions * 1.5) + replies = engagement_score
       def fetch_top_messages(community, limit)
         community.messages
                  .select(

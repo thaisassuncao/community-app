@@ -1,6 +1,11 @@
-import { Controller } from "@hotwired/stimulus"
+import "@hotwired/turbo-rails"
+import { Application, Controller } from "@hotwired/stimulus"
 
-export default class extends Controller {
+const application = Application.start()
+application.debug = false
+window.Stimulus = application
+
+class ReactionsController extends Controller {
   static values = { messageId: Number }
 
   react(event) {
@@ -17,7 +22,6 @@ export default class extends Controller {
     button.classList.add('loading')
 
     const url = `/messages/${this.messageIdValue}/reactions`
-    console.log('POST to:', url)
 
     fetch(url, {
       method: 'POST',
@@ -34,14 +38,12 @@ export default class extends Controller {
       })
     })
     .then(response => {
-      console.log('Response status:', response.status)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
       return response.text()
     })
     .then(html => {
-      console.log('Turbo stream HTML:', html)
       Turbo.renderStreamMessage(html)
       button.classList.remove('loading')
     })
@@ -52,3 +54,5 @@ export default class extends Controller {
     })
   }
 }
+
+application.register("reactions", ReactionsController)

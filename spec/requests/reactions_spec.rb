@@ -41,7 +41,8 @@ RSpec.describe "Reactions" do
 
       it "returns JSON error when format is JSON" do
         expect do
-          post message_reactions_path(message), params: valid_params, headers: { "Accept" => "application/json" }
+          post message_reactions_path(message), params: valid_params,
+                                                headers: { "Accept" => "application/json" }
         end.not_to change(Reaction, :count)
 
         expect(response).to have_http_status(:unprocessable_entity)
@@ -54,7 +55,8 @@ RSpec.describe "Reactions" do
     context "with JSON format" do
       it "returns JSON success response" do
         expect do
-          post message_reactions_path(message), params: valid_params, headers: { "Accept" => "application/json" }
+          post message_reactions_path(message), params: valid_params,
+                                                headers: { "Accept" => "application/json" }
         end.to change(Reaction, :count).by(1)
 
         expect(response).to have_http_status(:ok)

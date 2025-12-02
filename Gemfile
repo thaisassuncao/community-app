@@ -10,6 +10,7 @@ gem "rails", "7.2.2.2"
 gem "haml-rails"
 gem "httparty"
 gem "importmap-rails"
+gem "propshaft"
 gem "stimulus-rails"
 gem "turbo-rails"
 

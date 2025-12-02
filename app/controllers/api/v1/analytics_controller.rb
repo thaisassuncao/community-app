@@ -15,6 +15,13 @@ module Api
 
       private
 
+      # Business Rule: IP-based fraud/abuse detection
+      # Why: Multiple distinct user accounts posting from the same IP address is a strong
+      # indicator of coordinated abuse, bot networks, or sockpuppet accounts
+      # Legitimate scenarios (shared office WiFi, VPN) exist, but they're rare enough that
+      # this is still a valuable moderation signal. Default threshold of 3 users balances
+      # false positives (catching real abuse) vs false negatives (flagging legitimate use)
+      # Moderators can adjust min_users parameter based on their community's characteristics
       def fetch_suspicious_ips(min_users)
         Message
           .select("user_ip as ip, COUNT(DISTINCT user_id) as user_count")

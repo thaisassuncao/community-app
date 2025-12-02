@@ -1,7 +1,7 @@
 /* #1DA1F2 = Twitter Blue */
 
 .sentiment-positive {
-  color: #1DA1F2;
+  color: #2E6f40;
   font-weight: bold;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .message-card.sentiment-positive-card {
-  border-left-color: #1DA1F2;
+  border-left-color: #28a745;
 }
 
 .message-card.sentiment-negative-card {

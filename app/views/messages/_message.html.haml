@@ -9,16 +9,16 @@
     %p.card-text= message.content
 
     .d-flex.justify-content-between.align-items-center
-      .btn-group{role: "group", data: { controller: "reactions", reactions_message_id_value: message.id }}
+      .btn-group{role: "group", data: { controller: "reactions", reactions_message_id_value: message.id }, id: "#{dom_id(message)}_reactions"}
         %button.btn.btn-sm.btn-outline-secondary.reaction-btn{type: "button", data: { action: "click->reactions#react", reaction_type: "like" }}
           👍
-          %span.badge.bg-secondary= message.reactions.where(reaction_type: "like").count
+          %span.badge.bg-secondary{id: "#{dom_id(message)}_like_count"}= message.reactions.where(reaction_type: "like").count
         %button.btn.btn-sm.btn-outline-secondary.reaction-btn{type: "button", data: { action: "click->reactions#react", reaction_type: "love" }}
           ❤️
-          %span.badge.bg-secondary= message.reactions.where(reaction_type: "love").count
+          %span.badge.bg-secondary{id: "#{dom_id(message)}_love_count"}= message.reactions.where(reaction_type: "love").count
         %button.btn.btn-sm.btn-outline-secondary.reaction-btn{type: "button", data: { action: "click->reactions#react", reaction_type: "insightful" }}
           💡
-          %span.badge.bg-secondary= message.reactions.where(reaction_type: "insightful").count
+          %span.badge.bg-secondary{id: "#{dom_id(message)}_insightful_count"}= message.reactions.where(reaction_type: "insightful").count
 
       = link_to message_path(message), class: "btn btn-sm btn-outline-success" do
         💬

@@ -235,7 +235,7 @@ This will:
 - [X] README com instruções completas
 - [X] `.env.example` ou similar com variáveis de ambiente
 - [X] Linter/formatter configurado
-- [ ] Código limpo e organizado
+- [X] Código limpo e organizado
 
 ### Stack Utilizada
 - [X] Backend: Ruby on Rails
@@ -260,8 +260,8 @@ Não foi feito devido a tempo hábil.
 ### Funcionalidades - Frontend
 - [X] Listagem de comunidades
 - [X] Timeline de mensagens
-- [ ] Criar mensagem (sem reload)
-- [ ] Reagir a mensagens (sem reload)
+- [X] Criar mensagem (sem reload)
+- [X] Reagir a mensagens (sem reload)
 - [X] Ver thread de comentários
 - [X] Responsivo (mobile + desktop)
 
@@ -272,7 +272,7 @@ Não foi feito devido a tempo hábil.
 
 ### Documentação
 - [X] Setup local documentado
-- [ ] Decisões técnicas explicadas
+- [X] Decisões técnicas explicadas
 - [X] Como rodar seeds
 - [X] Endpoints da API documentados: `rswag`, `/api-docs`
 - [ ] Screenshot ou GIF da interface (opcional)
