@@ -1,0 +1,400 @@
+---
+openapi: 3.0.1
+info:
+  title: Community App API V1
+  version: v1
+  description: API for managing communities, messages and reactions with sentiment
+    analysis
+paths:
+  "/api/v1/analytics/suspicious_ips":
+    get:
+      summary: Suspicious IPs
+      tags:
+      - Analytics
+      description: Identifies IPs used by multiple users (possible account sharing
+        or VPN). By default, returns IPs used by 3 or more users.
+      parameters:
+      - name: min_users
+        in: query
+        required: false
+        description: 'Minimum number of users to consider IP suspicious (default:
+          3)'
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: empty list when no suspicious IPs exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  suspicious_ips:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ip:
+                          type: string
+                          example: 192.168.1.1
+                          description: IP address
+                        user_count:
+                          type: integer
+                          example: 5
+                          description: Number of distinct users using this IP
+                        usernames:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - user1
+                          - user2
+                          - user3
+                          description: List of usernames using this IP
+                      required:
+                      - ip
+                      - user_count
+                      - usernames
+  "/api/v1/communities":
+    get:
+      summary: List communities
+      tags:
+      - Communities
+      description: Returns all registered communities
+      responses:
+        '200':
+          description: list of communities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/community"
+    post:
+      summary: Create community
+      tags:
+      - Communities
+      description: Creates a new community
+      parameters: []
+      responses:
+        '201':
+          description: community created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  community:
+                    "$ref": "#/components/schemas/community"
+        '422':
+          description: duplicate or invalid name
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                community:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Ruby Brasil
+                      description: Community name (must be unique)
+                  required:
+                  - name
+              required:
+              - community
+  "/api/v1/communities/{id}/messages/top":
+    parameters:
+    - name: id
+      in: path
+      description: Community ID
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Top messages by engagement
+      tags:
+      - Communities
+      description: Returns the most engaged messages from a community (based on reactions
+        and replies)
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        description: 'Number of messages (default: 10, maximum: 50)'
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: list of messages ordered by engagement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        content:
+                          type: string
+                        user:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            username:
+                              type: string
+                        engagement_score:
+                          type: number
+                          description: Engagement score (reactions + replies)
+                        reaction_count:
+                          type: integer
+                        reply_count:
+                          type: integer
+                        ai_sentiment_score:
+                          type: number
+                        created_at:
+                          type: string
+                          format: date-time
+        '404':
+          description: community not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+  "/api/v1/messages":
+    post:
+      summary: Create new message
+      tags:
+      - Messages
+      description: Creates a new message in a community. Performs sentiment analysis
+        automatically.
+      parameters: []
+      responses:
+        '201':
+          description: message created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  content:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                  community_id:
+                    type: integer
+                  parent_message_id:
+                    type: integer
+                    nullable: true
+                  ai_sentiment_score:
+                    type: number
+                    format: float
+                    description: Sentiment score (-1.0 to 1.0)
+                  created_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - content
+                - user
+                - community_id
+                - ai_sentiment_score
+                - created_at
+        '422':
+          description: invalid parameters
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                      example: john_doe
+                      description: Username (created if doesn't exist)
+                    community_id:
+                      type: integer
+                      example: 1
+                      description: Community ID
+                    content:
+                      type: string
+                      example: This is a test message
+                      description: Message content
+                    user_ip:
+                      type: string
+                      example: 192.168.1.1
+                      description: User IP address
+                    parent_message_id:
+                      type: integer
+                      example: 10
+                      nullable: true
+                      description: Parent message ID (for comments)
+                  required:
+                  - username
+                  - community_id
+                  - content
+                  - user_ip
+              required:
+              - message
+  "/api/v1/reactions":
+    post:
+      summary: Create reaction
+      tags:
+      - Reactions
+      description: Adds a reaction to a message. Prevents duplicate reactions (same
+        user, same message, same type).
+      parameters: []
+      responses:
+        '201':
+          description: reaction created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_id:
+                    type: integer
+                  reactions:
+                    "$ref": "#/components/schemas/reaction_counts"
+        '422':
+          description: duplicate reaction or invalid parameters
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+        '404':
+          description: message not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reaction:
+                  type: object
+                  properties:
+                    user_id:
+                      type: integer
+                      example: 1
+                      description: User ID
+                    message_id:
+                      type: integer
+                      example: 10
+                      description: Message ID
+                    reaction_type:
+                      type: string
+                      enum:
+                      - like
+                      - love
+                      - insightful
+                      example: like
+                      description: 'Reaction type: like, love or insightful'
+                  required:
+                  - user_id
+                  - message_id
+                  - reaction_type
+              required:
+              - reaction
+servers:
+- url: http://localhost:3000
+  description: Development server
+- url: https://{defaultHost}
+  description: Production server
+  variables:
+    defaultHost:
+      default: www.example.com
+components:
+  schemas:
+    community:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+    message:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+        community_id:
+          type: integer
+        parent_message_id:
+          type: integer
+          nullable: true
+        ai_sentiment_score:
+          type: number
+          format: float
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - content
+      - user
+      - community_id
+      - ai_sentiment_score
+      - created_at
+    reaction_counts:
+      type: object
+      properties:
+        like:
+          type: integer
+        love:
+          type: integer
+        insightful:
+          type: integer
+    error:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string

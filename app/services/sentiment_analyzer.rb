@@ -39,6 +39,11 @@ class SentimentAnalyzer
 
   private
 
+  # Architecture Decision: Use word boundary matching (\b) instead of partial matching
+  # Why: This ensures "bom" (good) matches only as a complete word, not as part of
+  # compound words like "bom-dia" or "bomba". This prevents false positives/negatives
+  # in Portuguese sentiment analysis where partial matches would skew results.
+  # Example: "bombardeio" contains "bom" but has negative sentiment.
   def count_words(word_list)
     word_list.count { |word| @text.match?(/\b#{Regexp.escape(word)}\b/) }
   end

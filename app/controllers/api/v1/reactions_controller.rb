@@ -13,7 +13,7 @@ module Api
         )
 
         if reaction.save
-          render json: reaction_response(message), status: :ok
+          render json: reaction_response(message), status: :created
         else
           render json: { errors: reaction.errors.full_messages }, status: :unprocessable_content
         end
@@ -27,6 +27,12 @@ module Api
         params.require(:reaction).permit(:message_id, :user_id, :reaction_type)
       end
 
+      # API Design: Return aggregated reaction counts for the entire message
+      # Why: Clients need the full state of all reactions to maintain accurate UI.
+      # If we only returned the newly created reaction, the client would need to make
+      # a separate GET request to fetch updated counts, or maintain complex client-side
+      # state merging. This approach prevents race conditions where multiple users react
+      # simultaneously - each gets the current totals immediately after their action.
       def reaction_response(message)
         reaction_counts = message.reactions
                                  .group(:reaction_type)

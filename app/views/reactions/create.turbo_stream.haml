@@ -1,0 +1,18 @@
+-# Architecture Decision: Update all reaction counts, not just the clicked one
+-# Why: This ensures UI consistency when multiple users react simultaneously.
+-# If we only updated the clicked reaction type, race conditions could show
+-# stale counts for other reaction types. Updating all three badges guarantees
+-# the client sees the complete current state after their action.
+-# Performance impact is minimal (3 small DOM updates) vs correctness benefit.
+
+= turbo_stream.replace "#{dom_id(@message)}_like_count" do
+  %span.badge.bg-secondary{id: "#{dom_id(@message)}_like_count"}
+    = @message.reactions.where(reaction_type: "like").count
+
+= turbo_stream.replace "#{dom_id(@message)}_love_count" do
+  %span.badge.bg-secondary{id: "#{dom_id(@message)}_love_count"}
+    = @message.reactions.where(reaction_type: "love").count
+
+= turbo_stream.replace "#{dom_id(@message)}_insightful_count" do
+  %span.badge.bg-secondary{id: "#{dom_id(@message)}_insightful_count"}
+    = @message.reactions.where(reaction_type: "insightful").count

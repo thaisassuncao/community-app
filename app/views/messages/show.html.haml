@@ -1,0 +1,24 @@
+.row
+  .col-12
+    .mb-4
+      = link_to "← Voltar", :back, class: "btn btn-outline-secondary"
+
+.row
+  .col-lg-8
+    %h2.mb-3 Thread da Mensagem
+
+    = render partial: "messages/message_detail", locals: { message: @message }
+
+    .mt-4
+      %h4.mb-3 Comentários (#{@message.replies.count})
+      #replies
+        - @message.replies.order(created_at: :asc).each do |reply|
+          .reply-indent
+            = render partial: "messages/message_detail", locals: { message: reply }
+
+  .col-lg-4
+    .card.sticky-top{style: "top: 1rem"}
+      .card-header.bg-success.text-white
+        %h5.mb-0 Adicionar Comentário
+      .card-body
+        = render partial: "messages/form", locals: { message: @reply, community: @message.community, parent_message: @message }

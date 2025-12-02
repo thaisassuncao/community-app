@@ -14,6 +14,7 @@ Rails.application.configure do
 
   config.action_dispatch.show_exceptions = :rescuable
   config.action_controller.allow_forgery_protection = false
+  config.hosts.clear
   config.active_support.deprecation = :stderr
   config.active_support.disallowed_deprecation = :raise
   config.active_support.disallowed_deprecation_warnings = []

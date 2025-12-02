@@ -1,0 +1,20 @@
+.row
+  .col-12
+    .d-flex.justify-content-between.align-items-center.mb-4
+      %div
+        %h1= @community.name
+        %p.text-muted= @community.description
+      = link_to "← Voltar para Comunidades", root_path, class: "btn btn-outline-secondary"
+
+.row
+  .col-lg-8
+    %h2.mb-3 Timeline
+    #messages
+      = render partial: "messages/message", collection: @messages, as: :message
+
+  .col-lg-4
+    .card.sticky-top{style: "top: 1rem"}
+      .card-header.bg-success.text-white
+        %h5.mb-0 Nova Mensagem
+      .card-body
+        = render partial: "messages/form", locals: { message: @message, community: @community, parent_message: nil }

@@ -1,0 +1,15 @@
+.row
+  .col-12
+    %h1.mb-4 Comunidades
+
+.row
+  - @communities.each do |community|
+    .col-md-6.col-lg-4.mb-4
+      .card.h-100
+        .card-body
+          %h5.card-title= community.name
+          %p.card-text= community.description
+          .d-flex.justify-content-between.align-items-center
+            %small.text-muted
+              = pluralize(community.messages.count, "mensagem", "mensagens")
+            = link_to "Ver Timeline", community_path(community), class: "btn btn-success btn-sm"

@@ -1,0 +1,9 @@
+- if score && score != 0
+  %span{class: "badge #{score > 0 ? 'bg-success' : 'bg-danger'}"}
+    - if score > 0
+      ⬆ Positivo
+    - else
+      ⬇ Negativo
+- else
+  %span.badge.bg-secondary
+    ▬ Neutro

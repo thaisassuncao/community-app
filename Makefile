@@ -1,4 +1,4 @@
-.PHONY: help build up down test shell db-setup db-migrate lint lint-fix logs clean
+.PHONY: help build up down test shell db-setup db-migrate db-reset db-seed seed lint lint-fix logs clean api-docs
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -30,6 +30,15 @@ db-setup: ## Setup development database
 db-migrate: ## Run database migrations
 	docker-compose run --rm app bundle exec rails db:migrate
 
+db-reset: ## Reset database (drop, create, migrate)
+	docker-compose run --rm app bundle exec rails db:drop db:create db:migrate
+
+db-seed: ## Run simple database seed (db/seeds.rb)
+	docker-compose run --rm app bundle exec rails db:seed
+
+seed: ## Populate database with sample data via API
+	docker-compose exec app bundle exec ruby scripts/seed_via_api.rb
+
 lint: ## Run RuboCop linter
 	docker-compose run --rm app bundle exec rubocop
 
@@ -42,3 +51,6 @@ logs: ## Show logs
 clean: ## Clean up Docker resources
 	docker-compose down -v
 	docker system prune -f
+
+api-docs: ## Generate API documentation (Swagger/OpenAPI)
+	docker-compose run --rm test bundle exec rake rswag:specs:swaggerize
