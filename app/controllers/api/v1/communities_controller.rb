@@ -3,17 +3,41 @@
 module Api
   module V1
     class CommunitiesController < ApplicationController
+      def index
+        communities = Community.all
+
+        render json: communities.map { |c|
+          { id: c.id, name: c.name, description: c.description }
+        }, status: :ok
+      end
+
+      def create
+        community = Community.new(community_params)
+
+        if community.save
+          render json: {
+            community: { id: community.id, name: community.name, description: community.description }
+          }, status: :created
+        else
+          render json: { errors: community.errors.full_messages }, status: :unprocessable_content
+        end
+      end
+
       def top_messages
         community = Community.find(params[:id])
         limit = calculate_limit(params[:limit])
-
         messages = fetch_top_messages(community, limit)
+
         render json: { messages: messages.map { |msg| message_response(msg) } }, status: :ok
       rescue ActiveRecord::RecordNotFound
         render json: { errors: ["Community not found"] }, status: :not_found
       end
 
       private
+
+      def community_params
+        params.require(:community).permit(:name, :description)
+      end
 
       def calculate_limit(limit_param)
         limit = [limit_param.to_i, 50].min

@@ -13,7 +13,7 @@ module Api
         )
 
         if reaction.save
-          render json: reaction_response(message), status: :ok
+          render json: reaction_response(message), status: :created
         else
           render json: { errors: reaction.errors.full_messages }, status: :unprocessable_content
         end

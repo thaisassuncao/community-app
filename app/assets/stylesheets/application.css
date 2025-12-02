@@ -1,0 +1,57 @@
+/* #1DA1F2 = Twitter Blue */
+
+.sentiment-positive {
+  color: #1DA1F2;
+  font-weight: bold;
+}
+
+.sentiment-negative {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.sentiment-neutral {
+  color: #6c757d;
+}
+
+.message-card {
+  border-left: 4px solid #dee2e6;
+  transition: border-color 0.2s;
+}
+
+.message-card:hover {
+  border-left-color: #1DA1F2;
+}
+
+.message-card.sentiment-positive-card {
+  border-left-color: #1DA1F2;
+}
+
+.message-card.sentiment-negative-card {
+  border-left-color: #dc3545;
+}
+
+.reply-indent {
+  margin-left: 2rem;
+  border-left: 2px solid #dee2e6;
+  padding-left: 1rem;
+}
+
+.reaction-btn {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reaction-btn:hover {
+  transform: scale(1.1);
+}
+
+.reaction-btn.active {
+  background-color: #1DA1F2;
+  color: white;
+}
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}

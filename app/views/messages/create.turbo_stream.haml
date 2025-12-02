@@ -1,0 +1,10 @@
+- if @message.parent_message_id
+  = turbo_stream.append "replies" do
+    .reply-indent
+      = render partial: "messages/message_detail", locals: { message: @message }
+- else
+  = turbo_stream.prepend "messages" do
+    = render partial: "messages/message", locals: { message: @message }
+
+= turbo_stream.replace "message_form" do
+  = render partial: "messages/form", locals: { message: Message.new, community: @message.community, parent_message: nil }

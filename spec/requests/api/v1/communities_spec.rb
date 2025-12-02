@@ -3,6 +3,96 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::Communities" do
+  describe "GET /api/v1/communities" do
+    it "returns all communities" do
+      create(:community, name: "Rails Community", description: "Ruby on Rails developers")
+      create(:community, name: "Python Community", description: "Python developers")
+
+      get "/api/v1/communities"
+
+      expect(response).to have_http_status(:ok)
+      json_response = response.parsed_body
+
+      expect(json_response.size).to eq(2)
+      expect(json_response.first).to have_key("id")
+      expect(json_response.first).to have_key("name")
+      expect(json_response.first).to have_key("description")
+    end
+
+    it "returns empty array when no communities exist" do
+      get "/api/v1/communities"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body).to eq([])
+    end
+  end
+
+  describe "POST /api/v1/communities" do
+    let(:valid_params) do
+      {
+        community: {
+          name: "New Community",
+          description: "A brand new community"
+        }
+      }
+    end
+
+    let(:invalid_params) do
+      {
+        community: {
+          name: "",
+          description: "Missing name"
+        }
+      }
+    end
+
+    context "with valid parameters" do
+      it "creates a new community" do
+        expect do
+          post "/api/v1/communities", params: valid_params, as: :json
+        end.to change(Community, :count).by(1)
+
+        expect(response).to have_http_status(:created)
+        json_response = response.parsed_body
+        expect(json_response["community"]["name"]).to eq("New Community")
+        expect(json_response["community"]["description"]).to eq("A brand new community")
+      end
+    end
+
+    context "with invalid parameters" do
+      it "returns unprocessable entity" do
+        expect do
+          post "/api/v1/communities", params: invalid_params, as: :json
+        end.not_to change(Community, :count)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json_response = response.parsed_body
+        expect(json_response["errors"]).to be_present
+      end
+    end
+
+    context "with duplicate name" do
+      before do
+        create(:community, name: "Existing Community")
+      end
+
+      it "returns unprocessable entity" do
+        params = {
+          community: {
+            name: "Existing Community",
+            description: "Duplicate name"
+          }
+        }
+
+        post "/api/v1/communities", params: params, as: :json
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json_response = response.parsed_body
+        expect(json_response["errors"]).to include("Name has already been taken")
+      end
+    end
+  end
+
   describe "GET /api/v1/communities/:id/messages/top" do
     let(:community) { create(:community) }
     let(:user1) { create(:user) }

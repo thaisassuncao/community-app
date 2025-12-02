@@ -6,6 +6,8 @@ require_relative "../config/environment"
 
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "rspec/rails"
+require "shoulda/matchers"
+require "database_cleaner/active_record"
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -22,6 +24,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.include FactoryBot::Syntax::Methods
+
+  config.before(:each, type: :request) do
+    host! "www.example.com"
+  end
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction

@@ -24,7 +24,7 @@ RSpec.describe "Api::V1::Reactions" do
           post "/api/v1/reactions", params: valid_params
         end.to change(Reaction, :count).by(1)
 
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:created)
         json_response = response.parsed_body
         expect(json_response["message_id"]).to eq(message.id)
         expect(json_response["reactions"]["like"]).to eq(1)
@@ -68,7 +68,7 @@ RSpec.describe "Api::V1::Reactions" do
       it "returns correct counts for all reaction types" do
         post "/api/v1/reactions", params: valid_params
 
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:created)
         json_response = response.parsed_body
         expect(json_response["reactions"]["like"]).to eq(3)
         expect(json_response["reactions"]["love"]).to eq(1)

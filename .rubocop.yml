@@ -24,16 +24,34 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
     - 'config/routes.rb'
+    - 'db/seeds.rb'
 
 Metrics/AbcSize:
-  Max: 21
+  Max: 22
+  Exclude:
+    - 'scripts/**/*'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'scripts/**/*'
 
 Metrics/MethodLength:
   Max: 21
+  Exclude:
+    - 'scripts/**/*'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'scripts/**/*'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'scripts/**/*'
 
 Rails/Exit:
   Exclude:
     - 'spec/**/*'
+    - 'scripts/**/*'
 
 RSpec/IndexedLet:
   Enabled: false
@@ -55,3 +73,19 @@ RSpec/ExampleLength:
   Max: 15
 RSpec/MultipleExpectations:
   Max: 8
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Rails/Output:
+  Exclude:
+    - 'db/seeds.rb'
+    - 'scripts/**/*'
+
+Rails/EagerEvaluationLogMessage:
+  Enabled: false
+
+Performance/CollectionLiteralInLoop:
+  Exclude:
+    - 'db/seeds.rb'
+    - 'scripts/**/*'

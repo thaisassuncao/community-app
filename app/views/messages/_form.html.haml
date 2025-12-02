@@ -1,0 +1,15 @@
+= form_with model: message, id: "message_form", data: { controller: "message-form", turbo_frame: "_top" } do |f|
+  = f.hidden_field :community_id, value: community&.id
+  = f.hidden_field :parent_message_id, value: parent_message&.id
+  = f.hidden_field :user_ip, value: request.remote_ip
+
+  .mb-3
+    = f.label :username, "Nome de usuário", class: "form-label"
+    = f.text_field :username, class: "form-control", placeholder: "Seu nome de usuário", required: true, data: { message_form_target: "username" }
+
+  .mb-3
+    = f.label :content, "Mensagem", class: "form-label"
+    = f.text_area :content, class: "form-control", rows: 4, placeholder: "Escreva sua mensagem...", required: true, data: { message_form_target: "content" }
+
+  .d-grid
+    = f.submit "Enviar Mensagem", class: "btn btn-success", data: { message_form_target: "submit", action: "message-form#submit" }

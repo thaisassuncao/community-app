@@ -1,0 +1,3 @@
+= turbo_stream.replace "#{dom_id(@message)}_#{@reaction.reaction_type}_count" do
+  %span.badge.bg-secondary{id: "#{dom_id(@message)}_#{@reaction.reaction_type}_count"}
+    = @message.reactions.where(reaction_type: @reaction.reaction_type).count
