@@ -1,3 +1,10 @@
+-# UX–UI Decision: everything was written focusing on PT-BR users.
+-# Since the target audience is Brazilian users, all UX/UI content
+-# was written in Brazilian Portuguese. And because this is a prototype,
+-# everything was hard-coded for now.
+-# In the future, this will be improved with proper translations and English
+-# as the default language, likely following a YAML translation folder pattern.
+
 !!!
 %html
   %head
@@ -10,7 +17,7 @@
     %link{href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css", rel: "stylesheet"}
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
   %body
-    %nav.navbar.navbar-expand-lg.navbar-dark.mb-4{style: "background-color: #1DA1F2;"}
+    %nav.navbar.navbar-expand-lg.navbar-dark.bg-success.mb-4
       .container
         = link_to "Community App", root_path, class: "navbar-brand"
         %button.navbar-toggler{type: "button", data: {bs: {toggle: "collapse", target: "#navbarNav"}}}

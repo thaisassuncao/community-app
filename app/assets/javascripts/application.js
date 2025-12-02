@@ -50,7 +50,7 @@ class ReactionsController extends Controller {
     .catch(error => {
       console.error('Error creating reaction:', error)
       button.classList.remove('loading')
-      alert('Erro ao adicionar reação. Tente novamente.')
+      alert('Você já reagiu a esse tópico! Tente uma reação diferente.')
     })
   }
 }
