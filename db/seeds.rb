@@ -18,15 +18,15 @@ Rails.logger.debug "Creating communities..."
 communities = [
   Community.create!(
     name: "Ruby on Rails",
-    description: "Discuss everything related to Ruby on Rails framework"
+    description: "Discuta tudo relacionado ao Ruby on Rails framework!"
   ),
   Community.create!(
     name: "JavaScript",
-    description: "Share your JavaScript tips and tricks"
+    description: "Compartilhe suas dicas JavaScript!"
   ),
   Community.create!(
-    name: "General Discussion",
-    description: "Talk about anything tech-related"
+    name: "Conversa Geral",
+    description: "Converse sobre qualquer coisa relacionada a tech!"
   )
 ]
 
